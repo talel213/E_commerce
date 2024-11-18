@@ -1,23 +1,31 @@
+<?php
+ob_start();
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <?php
-    require_once "../connexion.php" ;
-    $sql="insert into produit values(NULL,'Cable rj45',1.5,2000,'bbbb bbbbbbbbb bbbbb bbbbbbb bbbb ','https://picsum.photos/400/400',1 )";
+?>
+<form action="<?=$_SERVER["PHP_SELF"]?>" method="post" class="form-control">
+    <label for="">Libelle</label><input type="text" name="lin" id="" class="form-control"><br>
+    <label for="">Prix</label><input type="text" name="pu" id="" class="form-control"><br>
+    <label for="">Quantité</label><input type="text" name="qte" id="" class="form-control"><br>
+    <label for="">Description</label><input type="texterea" name="des" id="" class="form-control"><br>
+    <label for="">img</label><input type="text" name="img" id="" class="form-control"><br>
+    <label for="">Promo</label><input type="text" name="promo" id="" class="form-control"><br>
+
+    <input type="submit" value="Ajouter" class="btn btn-success btn-xl center">
+</form>
+<?php
+if (isset($_POST["ok"])) {
+    require_once "../classes/crud_produit.php";
+    $crud = new crud_produit();
+    //$produit =new produit();
+    $res = $crud->add($produit);
+
     //envoi de la requette
-    $connexion= new connexion();
-    $pdo=$connexion->getConnexion();
-    $res=$pdo->exec($sql);
-    if($res)
-    {echo "insertion reussite";}
-    else "problem d'insertion";
-    ?>
-</body>
-</html>
+
+    if ($res) {
+        echo "insertion reussite";
+    } else "problem d'insertion";
+}
+$contenu = ob_get_clean();
+$titre = "ajouter un produit";
+include "layout.php";
+?>
